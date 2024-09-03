@@ -8,7 +8,7 @@ import torch.nn as nn
 import torchvision.transforms as transforms
 import sys
 # caution: path[0] is reserved for script path (or '' in REPL)
-sys.path.insert(1, '/home/aya.sp/diffusers/src/diffusers/pipelines/stable_diffusion/')
+sys.path.insert(1, '/home/adi.tsach/diffusers_adi_git/src/diffusers/pipelines/stable_diffusion/')
 import pipeline_stable_diffusion_instruct_pix2pix_image
 from pipeline_stable_diffusion_instruct_pix2pix_image import StableDiffusionInstructPix2PixImagePipeline
 from io import BytesIO

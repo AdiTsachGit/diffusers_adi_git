@@ -134,13 +134,13 @@ class StableDiffusionInstructPix2PixImagePipeline(StableDiffusionInstructPix2Pix
         )
     
     def _encode_image(self, image, device, num_images_per_prompt, do_classifier_free_guidance):
+        self.add_image_encoder()
         dtype = next(self.image_encoder.parameters()).dtype
 
         if not isinstance(image, torch.Tensor):
             image = self.feature_extractor(images=image, return_tensors="pt").pixel_values
 
         image = image.to(device=device, dtype=dtype)
-        self.add_image_encoder()
         self.image_encoder = self.image_encoder.to(device=device, dtype=dtype)
         image_embeddings, negative_prompt_embeds = self.image_encoder(image, return_uncond_vector=True)
         # image_embeddings = self.image_encoder(image).last_hidden_state.to(device=device, dtype=dtype)

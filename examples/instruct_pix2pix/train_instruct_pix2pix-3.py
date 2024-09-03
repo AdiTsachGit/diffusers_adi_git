@@ -58,7 +58,7 @@ from diffusers.utils.torch_utils import is_compiled_module
 from diffusers.pipelines.paint_by_example import PaintByExampleImageEncoder
 import sys
 # caution: path[0] is reserved for script path (or '' in REPL)
-sys.path.insert(1, '/home/aya.sp/diffusers/src/diffusers/pipelines/stable_diffusion/')
+sys.path.insert(1, '/home/adi.tsach/diffusers_adi_git/src/diffusers/pipelines/stable_diffusion/')
 import pipeline_stable_diffusion_instruct_pix2pix_image
 from pipeline_stable_diffusion_instruct_pix2pix_image import StableDiffusionInstructPix2PixImagePipeline
 
@@ -1135,7 +1135,7 @@ def main():
 
                     encoder_hidden_states = torch.where(prompt_mask, null_conditioning, encoder_hidden_states)
                     
-                    projection_layer = torch.nn.Linear(1024, 768, device=accelerator.device)  # Adjust dimensions as necessary
+                    #projection_layer = torch.nn.Linear(1024, 768, device=accelerator.device)  # Adjust dimensions as necessary
                     # encoder_hidden_states = projection_layer(encoder_hidden_states) no need now aya
                     # Sample masks for the original images.
                     image_mask_dtype = source_img_embeds.dtype
