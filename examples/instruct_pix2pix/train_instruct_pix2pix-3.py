@@ -697,8 +697,8 @@ def main():
     # )
     # image_encoder = FrozenCLIPImageEmbedder("openai/clip-vit-large-patch14").transformer
 
-    image_encoder =PaintByExampleImageEncoder.from_pretrained(
-        "Fantasy-Studio/Paint-by-Example", subfolder = "image_encoder"
+    image_encoder =CLIPVisionModel.from_pretrained(
+        "openai/clip-vit-large-patch14"
         )
 
     vae = AutoencoderKL.from_pretrained(
@@ -730,7 +730,7 @@ def main():
             in_channels, out_channels, unet.conv_in.kernel_size, unet.conv_in.stride, unet.conv_in.padding
         )
         new_conv_in.weight.zero_()
-        new_conv_in.weight[:, :8, :, :].copy_(unet.conv_in.weight)
+        new_conv_in.weight[:, :8, :, :].copy_(unet.conv_in.weight) ############
         unet.conv_in = new_conv_in
 
     # Freeze vae and text_encoder
@@ -1131,9 +1131,11 @@ def main():
                     blank_image_tensor = torch.zeros((3,224, 224), device=accelerator.device)
                     # Compute the null conditioning using the blank image
                     null_conditioning =image_encoder(pixel_values=blank_image_tensor.unsqueeze(0))[0] #aya to check
-                    # encoder_hidden_states = encoder_hidden_states.last_hidden_state
-
+                    encoder_hidden_states = encoder_hidden_states.last_hidden_state
+                    
                     encoder_hidden_states = torch.where(prompt_mask, null_conditioning, encoder_hidden_states)
+                    encoder_hidden_states = encoder_hidden_states[:, :, :768]
+
                     
                     #projection_layer = torch.nn.Linear(1024, 768, device=accelerator.device)  # Adjust dimensions as necessary
                     # encoder_hidden_states = projection_layer(encoder_hidden_states) no need now aya
@@ -1166,7 +1168,7 @@ def main():
                 avg_loss = accelerator.gather(loss.repeat(args.train_batch_size)).mean()
                 train_loss += avg_loss.item() / args.gradient_accumulation_steps
 
-                # Backpropagate`
+                # image_latents2opagate`
                 # accelerator.backward(loss)
                 # # Apply gradient clipping based on mixed precision
                 # if accelerator.sync_gradients:

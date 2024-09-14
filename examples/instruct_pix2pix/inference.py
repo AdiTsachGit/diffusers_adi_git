@@ -232,12 +232,12 @@ black_image = Image.new("L", (width, height), 0)
 
 # image2 =get_image_encoding(url2, pipe.image_encoder)
 ##num_inference_steps = 20
-num_inference_steps = 2
+num_inference_steps = 20
 
 ##image_guidance_scale = 5
-image_guidance_scale = 0.6
+image_guidance_scale = 5
 ##guidance_scale = 10
-guidance_scale = 2
+guidance_scale = 10
 
 # c = pipe.image_encoder(image2)
 # c = pipe.proj_out(c)
